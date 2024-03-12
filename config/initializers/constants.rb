@@ -1,0 +1,2 @@
+BLANK = ''
+HEIGHT = 20

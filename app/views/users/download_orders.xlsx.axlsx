@@ -1,0 +1,67 @@
+# app/views/users/download_orders.xlsx.axlsx
+
+wb = xlsx_package.workbook
+
+wb.styles do |style|
+  description_style = style.add_style( b: true, fg_color: '212529', sz: 12, alignment: {vertical: :center} )
+
+  header_style = style.add_style(
+    b: true, sz: 12, bg_color: '0E2C51', fg_color: 'FFFFFF',
+    alignment: {vertical: :center, horizontal: :center},
+    border: {style: :thin, color: 'DDDDDD'}
+  )
+
+  warning_allocation_style = style.add_style(
+    b: true, bg_color: 'FFF3CD', fg_color: '856404', sz: 12,
+    border: { style: :thin, color: 'FFEEBA' }, alignment: { vertical: :center }
+  )
+
+  success_allocation_style = style.add_style(
+    b: true, bg_color: 'D4EDDA', fg_color: '155724', sz: 12,
+    border: { style: :thin, color: 'C3E6CB' }, alignment: { vertical: :center }
+  )
+
+  record_style = style.add_style(
+    num_fmt: 4, sz: 11, alignment: { vertical: :center },
+    border: { style: :thin, color: '000000' }
+  )
+
+
+    wb.add_worksheet(name: 'User Order History') do |sheet|
+        merge_row_count = 0
+
+        sheet.add_row ['User Name:', "#{@user.username.titleize} #{BLANK}"], height: HEIGHT, style: description_style
+        merge_row_count += 1
+
+        sheet.add_row ['Email:', "#{@user.email} #{BLANK}"], height: HEIGHT, style: description_style
+        merge_row_count += 1
+
+        sheet.add_row ['Phone:', "#{@user.phone} #{BLANK}"], height: HEIGHT, style: description_style
+        merge_row_count += 1
+
+        sheet.add_row [BLANK], height: HEIGHT
+        merge_row_count += 1
+
+
+        ######################## ORDER DETAILS #######################
+        sheet.add_row ['Product Code', 'Product Name', 'Category', 'Purchase Date'], height: 25, style: header_style
+
+        merge_row_count += 1
+
+        if @order_data.empty?
+            sheet.add_row ['No data to show'], height: 25
+        else
+            @order_data.each do |data|
+                next if data[:product_name] == 'Unknown'
+                sheet.add_row [data[:product_code],data[:product_name],data[:product_category], data[:order_date]]
+            end
+
+            sheet.add_row [BLANK], height: HEIGHT
+            merge_row_count += 1
+            sheet.add_row [BLANK], height: HEIGHT
+            merge_row_count += 1
+        end
+    end
+end
+
+

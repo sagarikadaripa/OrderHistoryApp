@@ -1,0 +1,36 @@
+<div class="container mt-5">
+  <h1 class="display-4 mb-4">Users Download History</h1>
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover table-light table-striped-columns">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Username</th>
+              <th scope="col">Email</th>
+              <th scope="col">Phone</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+              <tr>
+                <td><%= user.username %></td>
+                <td><%= user.email %></td>
+                <td><%= user.phone %></td>
+                <td>
+                  <%= link_to download_orders_user_path(user), class: 'btn btn-primary btn-sm', target: '_blank' do %>
+                    <i class="fas fa-download mr-2"></i>Download Orders
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="pagination justify-content-center">
+        <%= paginate @users, theme: 'bootstrap-5', pagination_class: "pagination-sm flex-wrap justify-content-center", nav_class: "d-inline-block" %>
+      </div>
+    </div>
+  </div>
+</div>
